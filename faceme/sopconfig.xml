@@ -1,19 +1,16 @@
-<?xml version="1.0" encoding="utf-8"?>
-<sopconfig xmlns:syberos="http://schemas.syberos.com/sop/res/syberos/v1"
-    syberos:sopid="com.syberos.faceme"
-    syberos:versionCode="1"
-    syberos:versionName="1.0.0">
-    <uses-permission />
-    <uses-sdk />
-    <application syberos:debuggable="true"
-        syberos:description="Brief introduction of your application here. "
-        syberos:icon="res/faceme.png"
-        syberos:name="faceme">
-        <uiapp syberos:id="faceme"
-            syberos:exec="bin/faceme"
-            syberos:icon="res/faceme.png"
-            syberos:launcher="true">
+<?xml version="1.0" encoding="UTF-8"?>
+<sopconfig syberos:versionCode="1" xmlns:syberos="http://schemas.syberos.com/sop/res/syberos/v1" syberos:sopid="com.syberos.faceme" syberos:shareUserId="" syberos:versionName="1.0.0">
+    <uses-permission syberos:name="syberos.permission.ACCESS_CAMERA"/>
+    <uses-permission syberos:name="syberos.permission.ACCESS_FLASHLIGHT"/>
+    <uses-permission syberos:name="syberos.permission.ACCESS_NOTIFICATION"/>
+    <uses-permission syberos:name="syberos.permission.ACCESS_WAKELOCK"/>
+    <uses-permission syberos:name="syberos.permission.ACCESS_WIFI"/>
+    <uses-permission syberos:name="syberos.permission.ADMIN_DATA_NETWORK"/>
+    <uses-permission syberos:name="syberos.permission.READ_NETWORK_STATE"/>
+    <uses-sdk syberos:targetSdkVersion="" syberos:minSdkVersion=""/>
+    <application syberos:description="Brief introduction of your application here. " syberos:name="faceme" syberos:icon="res/faceme.png" syberos:debuggable="true">
+        <uiapp syberos:exec="bin/faceme" syberos:launcher="true" syberos:name="faceme" syberos:icon="res/face.png" syberos:splash="" syberos:id="faceme" syberos:background="">
+            <doctype syberos:id=""/>
         </uiapp>
     </application>
 </sopconfig>
-
