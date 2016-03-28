@@ -33,8 +33,8 @@ DEFINES += WEBRTC_VOICE_ENGINE_CALL_REPORT_API
 DEFINES += WEBRTC_LINUX
 DEFINES += LINUX_PULSE
 DEFINES += YUANXIN
-DEFINES += __SSE__
-DEFINES += __SSE2__
+#DEFINES += __SSE__
+#DEFINES += __SSE2__
 DEFINES += PJ_IS_BIG_ENDIAN
 DEFINES += PJ_IS_LITTLE_ENDIAN
 DEFINES += FIXED_POINT
@@ -50,9 +50,25 @@ DEFINES += NETEQ_ILBC_CODEC
 DEFINES += _USE_BIT64
 
 
-LIBS += -ldl -lcrypt -g -fPIC  -lrt
+LIBS += -ldl -lcrypt -g -fPIC  -lrt -ljpeg
 LIBS += -lpthread
 LIBS += -laudio-manager
+
+#zhangp add 2016.3.24 begin
+LIBS += -L../libyuv
+LIBS += -lyuv
+INCLUDEPATH += ../libyuv/include
+QMAKE_LFLAGS += -Wl,-rpath=$$LIB_DIR -Wl,-Bsymbolic
+#zhangp add 2016.3.24 end
+
+#zhangp add 2016.3.28 begin
+unix:!macx: LIBS += -L$$PWD/vpx/lib/ -lvpx
+
+INCLUDEPATH += $$PWD/vpx/include
+DEPENDPATH += $$PWD/vpx/include
+
+unix:!macx: PRE_TARGETDEPS += $$PWD/vpx/lib/libvpx.a
+#zhangp add 2016.3.28 end
 
 #指定目标文件(obj)的存放目录
 OBJECTS_DIR += ./tmp
@@ -60,50 +76,82 @@ OBJECTS_DIR += ./tmp
 #LIBS += /user/lib/
 
 INCLUDEPATH += . \
-          interface\
-          sources\
-          sources/common_audio/signal_processing/include\
-          sources/common_audio/resampler/include\
-          sources/common_audio/vad/include\
-          sources/modules/audio_device/include\
-          sources/modules/audio_device\
-          sources/modules/audio_device/android	\
-          sources/modules/audio_device/linux \
-          sources/modules/audio_device/dummy\
-          sources/modules/audio_processing/agc/include\
-          sources/modules/audio_processing/agc\
-          sources/modules/audio_processing/ns/include\
-          sources/modules/audio_processing/aec/include\
-          sources/modules/audio_processing/include\
-          sources/modules/audio_processing/utility\
-          sources/modules/audio_processing/aecm/include\
-          sources/modules/bitrate_controller\
-          sources/modules/bitrate_controller/include\
-          sources/modules/interface\
-          sources/modules/remote_bitrate_estimator\
-          sources/modules/remote_bitrate_estimator/include\
-          sources/modules/utility/interface \
-          sources/system_wrappers/interface\
-          sources/modules/audio_coding/main/interface \
-          sources/modules/media_file/interface \
-          sources/modules/rtp_rtcp/interface \
-          sources/modules/udp_transport/interface \
-          sources/modules/system_wrappers/interface\
-          sources/modules/audio_conference_mixer/interface\
-          sources/voice_engine/include\
-          sources/modules\
-          sources/modules/audio_coding/codecs/cng/include\
-          sources/modules/audio_coding/codecs/g711/include \
-          sources/modules/audio_coding/codecs/g722/include \
-          sources/modules/audio_coding/codecs/g729 \
-          sources/modules/audio_coding/codecs/ilbc/interface \
-          sources/modules/audio_coding/codecs/isac/main/interface \
-          sources/modules/audio_coding/codecs/isac/fix/interface \
-          sources/modules/audio_coding/codecs/pcm16b/include \
-          sources/modules/audio_coding/neteq/interface\
-          sources/system_wrappers/source/spreadsortlib\
-          vpx/include\
-          sources/modules/audio_coding/codecs/ilbc
+            interface\
+            sources\
+            sources/common_audio/signal_processing/include\
+            sources/common_audio/resampler/include\
+            sources/common_audio/vad/include\
+            sources/modules/audio_device/include\
+            sources/modules/audio_device\
+            sources/modules/audio_device/android	\
+            sources/modules/audio_device/linux \
+            sources/modules/audio_device/dummy\
+            sources/modules/audio_processing/agc/include\
+            sources/modules/audio_processing/agc\
+            sources/modules/audio_processing/ns/include\
+            sources/modules/audio_processing/aec/include\
+            sources/modules/audio_processing/include\
+            sources/modules/audio_processing/utility\
+            sources/modules/audio_processing/aecm/include\
+            sources/modules/bitrate_controller\
+            sources/modules/bitrate_controller/include\
+            sources/modules/interface\
+            sources/modules/remote_bitrate_estimator\
+            sources/modules/remote_bitrate_estimator/include\
+            sources/modules/utility/interface \
+            sources/system_wrappers/interface\
+            sources/modules/audio_coding/main/interface \
+            sources/modules/media_file/interface \
+            sources/modules/rtp_rtcp/interface \
+            sources/modules/udp_transport/interface \
+            sources/modules/system_wrappers/interface\
+            sources/modules/audio_conference_mixer/interface\
+            sources/voice_engine/include\
+            sources/modules\
+            sources/modules/audio_coding/codecs/cng/include\
+            sources/modules/audio_coding/codecs/g711/include \
+            sources/modules/audio_coding/codecs/g722/include \
+            sources/modules/audio_coding/codecs/g729 \
+            sources/modules/audio_coding/codecs/ilbc/interface \
+            sources/modules/audio_coding/codecs/isac/main/interface \
+            sources/modules/audio_coding/codecs/isac/fix/interface \
+            sources/modules/audio_coding/codecs/pcm16b/include \
+            sources/modules/audio_coding/neteq/interface\
+            sources/system_wrappers/source/spreadsortlib\
+            sources/modules/audio_coding/codecs/ilbc \
+#zhangp add 2016.3.24 begin
+            sources/common_video/jpeg/include \
+            sources/common_video/jpeg \
+            sources/common_video/libyuv/include \
+            sources/common_video \
+            sources/video_engine/include \
+            sources/video_engine \
+            sources/modules/video_capture/main/interface \
+            sources/modules/video_capture/main/source/Linux \
+            sources/modules/video_capture/main/source \
+            sources/modules/video_coding/codecs/i420/main/interface \
+            sources/modules/video_coding/codecs/interface/mock \
+            sources/modules/video_coding/codecs/interface \
+            sources/modules/video_capture/main/interface \
+            sources/modules/video_capture/main/source/Linux \
+            sources/modules/video_capture/main/source \
+            sources/modules/video_coding/codecs/i420/main/interface \
+            sources/modules/video_coding/codecs/interface/mock \
+            sources/modules/video_coding/codecs/interface \
+            sources/modules/video_coding/codecs/vp8/include \
+            sources/modules/video_coding/codecs/vp8 \
+            sources/modules/video_coding/main/interface/mock \
+            sources/modules/video_coding/main/interface \
+            sources/modules/video_coding/main/source/mock \
+            sources/modules/video_coding/main/source \
+            sources/modules/video_processing/main/interface \
+            sources/modules/video_processing/main/source \
+            sources/modules/video_render/main/interface \
+            sources/modules/video_render/main/source/linux \
+            sources/modules/video_render/main/source \
+            vpx/include \
+            vpx/include/vpx
+#zhangp add 2016.3.24 end
 
 # Input
 HEADERS += interface/media_stream.h \
@@ -627,7 +675,148 @@ HEADERS += interface/media_stream.h \
            sources/modules/audio_coding/codecs/isac/main/source/structs.h \
            sources/modules/audio_coding/codecs/isac/main/test/debugUtility.h \
            sources/modules/audio_coding/codecs/isac/main/util/utility.h \
-           sources/modules/audio_device/test/android/audio_device_android_test/jni/org_webrtc_voiceengine_test_AudioDeviceAndroidTest.h
+           sources/modules/audio_device/test/android/audio_device_android_test/jni/org_webrtc_voiceengine_test_AudioDeviceAndroidTest.h \
+#zhangp add 2016.3.24 begin
+    sources/common_video/interface/i420_video_frame.h \
+    sources/common_video/interface/video_image.h \
+    sources/common_video/jpeg/include/jpeg.h \
+    sources/common_video/jpeg/data_manager.h \
+    sources/common_video/libyuv/include/scaler.h \
+    sources/common_video/libyuv/include/webrtc_libyuv.h \
+    sources/common_video/plane.h \
+    sources/video_engine/include/vie_base.h \
+    sources/video_engine/include/vie_capture.h \
+    sources/video_engine/include/vie_codec.h \
+    sources/video_engine/include/vie_encryption.h \
+    sources/video_engine/include/vie_errors.h \
+    sources/video_engine/include/vie_external_codec.h \
+    sources/video_engine/include/vie_file.h \
+    sources/video_engine/include/vie_image_process.h \
+    sources/video_engine/include/vie_network.h \
+    sources/video_engine/include/vie_render.h \
+    sources/video_engine/include/vie_rtp_rtcp.h \
+    sources/video_engine/encoder_state_feedback.h \
+    sources/video_engine/stream_synchronization.h \
+    sources/video_engine/vie_base_impl.h \
+    sources/video_engine/vie_capture_impl.h \
+    sources/video_engine/vie_capturer.h \
+    sources/video_engine/vie_channel.h \
+    sources/video_engine/vie_channel_group.h \
+    sources/video_engine/vie_channel_manager.h \
+    sources/video_engine/vie_codec_impl.h \
+    sources/video_engine/vie_defines.h \
+    sources/video_engine/vie_encoder.h \
+    sources/video_engine/vie_encryption_impl.h \
+    sources/video_engine/vie_external_codec_impl.h \
+    sources/video_engine/vie_file_image.h \
+    sources/video_engine/vie_file_impl.h \
+    sources/video_engine/vie_file_player.h \
+    sources/video_engine/vie_file_recorder.h \
+    sources/video_engine/vie_frame_provider_base.h \
+    sources/video_engine/vie_image_process_impl.h \
+    sources/video_engine/vie_impl.h \
+    sources/video_engine/vie_input_manager.h \
+    sources/video_engine/vie_manager_base.h \
+    sources/video_engine/vie_network_impl.h \
+    sources/video_engine/vie_performance_monitor.h \
+    sources/video_engine/vie_receiver.h \
+    sources/video_engine/vie_ref_count.h \
+    sources/video_engine/vie_remb.h \
+    sources/video_engine/vie_render_impl.h \
+    sources/video_engine/vie_render_manager.h \
+    sources/video_engine/vie_renderer.h \
+    sources/video_engine/vie_rtp_rtcp_impl.h \
+    sources/video_engine/vie_sender.h \
+    sources/video_engine/vie_shared_data.h \
+    sources/video_engine/vie_sync_module.h \
+    sources/modules/video_capture/main/interface/video_capture.h \
+    sources/modules/video_capture/main/interface/video_capture_defines.h \
+    sources/modules/video_capture/main/interface/video_capture_factory.h \
+    sources/modules/video_capture/main/source/Linux/device_info_linux.h \
+    sources/modules/video_capture/main/source/Linux/video_capture_linux.h \
+    sources/modules/video_capture/main/source/device_info_impl.h \
+    sources/modules/video_capture/main/source/video_capture_config.h \
+    sources/modules/video_capture/main/source/video_capture_delay.h \
+    sources/modules/video_capture/main/source/video_capture_impl.h \
+    sources/modules/video_coding/codecs/i420/main/interface/i420.h \
+    sources/modules/video_coding/codecs/interface/mock/mock_video_codec_interface.h \
+    sources/modules/video_coding/codecs/interface/video_codec_interface.h \
+    sources/modules/video_coding/codecs/interface/video_error_codes.h \
+    sources/modules/video_coding/codecs/vp8/include/vp8.h \
+    sources/modules/video_coding/codecs/vp8/include/vp8_common_types.h \
+    sources/modules/video_coding/codecs/vp8/reference_picture_selection.h \
+    sources/modules/video_coding/codecs/vp8/temporal_layers.h \
+    sources/modules/video_coding/codecs/vp8/vp8_impl.h \
+    sources/modules/video_coding/main/interface/mock/mock_vcm_callbacks.h \
+    sources/modules/video_coding/main/interface/video_coding.h \
+    sources/modules/video_coding/main/interface/video_coding_defines.h \
+    sources/modules/video_coding/main/source/mock/fake_tick_time.h \
+    sources/modules/video_coding/main/source/codec_database.h \
+    sources/modules/video_coding/main/source/codec_timer.h \
+    sources/modules/video_coding/main/source/content_metrics_processing.h \
+    sources/modules/video_coding/main/source/decoding_state.h \
+    sources/modules/video_coding/main/source/encoded_frame.h \
+    sources/modules/video_coding/main/source/er_tables_xor.h \
+    sources/modules/video_coding/main/source/event.h \
+    sources/modules/video_coding/main/source/exp_filter.h \
+    sources/modules/video_coding/main/source/fec_tables_xor.h \
+    sources/modules/video_coding/main/source/frame_buffer.h \
+    sources/modules/video_coding/main/source/frame_dropper.h \
+    sources/modules/video_coding/main/source/generic_decoder.h \
+    sources/modules/video_coding/main/source/generic_encoder.h \
+    sources/modules/video_coding/main/source/inter_frame_delay.h \
+    sources/modules/video_coding/main/source/internal_defines.h \
+    sources/modules/video_coding/main/source/jitter_buffer.h \
+    sources/modules/video_coding/main/source/jitter_buffer_common.h \
+    sources/modules/video_coding/main/source/jitter_estimator.h \
+    sources/modules/video_coding/main/source/media_opt_util.h \
+    sources/modules/video_coding/main/source/media_optimization.h \
+    sources/modules/video_coding/main/source/nack_fec_tables.h \
+    sources/modules/video_coding/main/source/packet.h \
+    sources/modules/video_coding/main/source/qm_select.h \
+    sources/modules/video_coding/main/source/qm_select_data.h \
+    sources/modules/video_coding/main/source/receiver.h \
+    sources/modules/video_coding/main/source/rtt_filter.h \
+    sources/modules/video_coding/main/source/session_info.h \
+    sources/modules/video_coding/main/source/tick_time_base.h \
+    sources/modules/video_coding/main/source/timestamp_extrapolator.h \
+    sources/modules/video_coding/main/source/timestamp_map.h \
+    sources/modules/video_coding/main/source/timing.h \
+    sources/modules/video_coding/main/source/video_coding_impl.h \
+    sources/modules/video_processing/main/interface/video_processing.h \
+    sources/modules/video_processing/main/interface/video_processing_defines.h \
+    sources/modules/video_processing/main/source/brighten.h \
+    sources/modules/video_processing/main/source/brightness_detection.h \
+    sources/modules/video_processing/main/source/color_enhancement.h \
+    sources/modules/video_processing/main/source/color_enhancement_private.h \
+    sources/modules/video_processing/main/source/content_analysis.h \
+    sources/modules/video_processing/main/source/deflickering.h \
+    sources/modules/video_processing/main/source/denoising.h \
+    sources/modules/video_processing/main/source/frame_preprocessor.h \
+    sources/modules/video_processing/main/source/spatial_resampler.h \
+    sources/modules/video_processing/main/source/video_decimator.h \
+    sources/modules/video_processing/main/source/video_processing_impl.h \
+    sources/modules/video_render/main/interface/video_render.h \
+    sources/modules/video_render/main/interface/video_render_defines.h \
+#    sources/modules/video_render/main/source/linux/video_render_linux_impl.h \
+#    sources/modules/video_render/main/source/linux/video_x11_channel.h \
+#    sources/modules/video_render/main/source/linux/video_x11_render.h \
+    sources/modules/video_render/main/source/i_video_render.h \
+    sources/modules/video_render/main/source/incoming_video_stream.h \
+    sources/modules/video_render/main/source/video_render_frames.h \
+    sources/modules/video_render/main/source/video_render_impl.h \
+    sources/modules/video_render/main/source/external/video_render_external_impl.h
+#    vpx/include/vpx/vp8.h \
+#    vpx/include/vpx/vp8cx.h \
+#    vpx/include/vpx/vp8dx.h \
+#    vpx/include/vpx/vpx_codec.h \
+#    vpx/include/vpx/vpx_codec_impl_bottom.h \
+#    vpx/include/vpx/vpx_codec_impl_top.h \
+#    vpx/include/vpx/vpx_decoder.h \
+#    vpx/include/vpx/vpx_encoder.h \
+#    vpx/include/vpx/vpx_image.h \
+#    vpx/include/vpx/vpx_integer.h
+#zhangp add 2016.3.24 end
 
 
 SOURCES +=  sources/modules/audio_processing/utility/fft4g.c\
@@ -945,6 +1134,107 @@ SOURCES +=  sources/modules/audio_processing/utility/fft4g.c\
 #            sources/modules/audio_processing/aec/aec_core.c \
 #            sources/modules/audio_processing/aec/aec_resampler.c \
 #            sources/modules/audio_processing/aec/aec_rdft.c
+#zhangp add 2016.3.24 begin
+    sources/common_video/jpeg/data_manager.cc \
+    sources/common_video/jpeg/jpeg.cc \
+    sources/common_video/libyuv/scaler.cc \
+    sources/common_video/libyuv/webrtc_libyuv.cc \
+    sources/common_video/i420_video_frame.cc \
+    sources/common_video/plane.cc \
+    sources/video_engine/encoder_state_feedback.cc \
+    sources/video_engine/stream_synchronization.cc \
+    sources/video_engine/vie_base_impl.cc \
+    sources/video_engine/vie_capture_impl.cc \
+    sources/video_engine/vie_capturer.cc \
+    sources/video_engine/vie_channel.cc \
+    sources/video_engine/vie_channel_group.cc \
+    sources/video_engine/vie_channel_manager.cc \
+    sources/video_engine/vie_codec_impl.cc \
+    sources/video_engine/vie_encoder.cc \
+    sources/video_engine/vie_encryption_impl.cc \
+    sources/video_engine/vie_external_codec_impl.cc \
+    sources/video_engine/vie_file_image.cc \
+    sources/video_engine/vie_file_impl.cc \
+    sources/video_engine/vie_file_player.cc \
+    sources/video_engine/vie_file_recorder.cc \
+    sources/video_engine/vie_frame_provider_base.cc \
+    sources/video_engine/vie_image_process_impl.cc \
+    sources/video_engine/vie_impl.cc \
+    sources/video_engine/vie_input_manager.cc \
+    sources/video_engine/vie_manager_base.cc \
+    sources/video_engine/vie_network_impl.cc \
+    sources/video_engine/vie_performance_monitor.cc \
+    sources/video_engine/vie_receiver.cc \
+    sources/video_engine/vie_ref_count.cc \
+    sources/video_engine/vie_remb.cc \
+    sources/video_engine/vie_render_impl.cc \
+    sources/video_engine/vie_render_manager.cc \
+    sources/video_engine/vie_renderer.cc \
+    sources/video_engine/vie_rtp_rtcp_impl.cc \
+    sources/video_engine/vie_sender.cc \
+    sources/video_engine/vie_shared_data.cc \
+    sources/video_engine/vie_sync_module.cc \
+    sources/modules/video_capture/main/source/Linux/device_info_linux.cc \
+    sources/modules/video_capture/main/source/Linux/video_capture_linux.cc \
+    sources/modules/video_capture/main/source/device_info_impl.cc \
+    sources/modules/video_capture/main/source/video_capture_factory.cc \
+    sources/modules/video_capture/main/source/video_capture_impl.cc \
+    sources/modules/video_coding/codecs/i420/main/source/i420.cc \
+#    sources/modules/video_coding/codecs/tools/video_quality_measurement.cc \
+    sources/modules/video_coding/codecs/vp8/reference_picture_selection.cc \
+#    sources/modules/video_coding/codecs/vp8/reference_picture_selection_unittest.cc \
+    sources/modules/video_coding/codecs/vp8/temporal_layers.cc \
+#    sources/modules/video_coding/codecs/vp8/temporal_layers_unittest.cc \
+    sources/modules/video_coding/codecs/vp8/vp8_impl.cc \
+    sources/modules/video_coding/main/source/codec_database.cc \
+    sources/modules/video_coding/main/source/codec_timer.cc \
+    sources/modules/video_coding/main/source/content_metrics_processing.cc \
+    sources/modules/video_coding/main/source/decoding_state.cc \
+#    sources/modules/video_coding/main/source/decoding_state_unittest.cc \
+    sources/modules/video_coding/main/source/encoded_frame.cc \
+    sources/modules/video_coding/main/source/exp_filter.cc \
+    sources/modules/video_coding/main/source/frame_buffer.cc \
+    sources/modules/video_coding/main/source/frame_dropper.cc \
+    sources/modules/video_coding/main/source/generic_decoder.cc \
+    sources/modules/video_coding/main/source/generic_encoder.cc \
+    sources/modules/video_coding/main/source/inter_frame_delay.cc \
+    sources/modules/video_coding/main/source/jitter_buffer.cc \
+    sources/modules/video_coding/main/source/jitter_buffer_common.cc \
+#    sources/modules/video_coding/main/source/jitter_buffer_unittest.cc \
+    sources/modules/video_coding/main/source/jitter_estimator.cc \
+    sources/modules/video_coding/main/source/media_opt_util.cc \
+    sources/modules/video_coding/main/source/media_optimization.cc \
+    sources/modules/video_coding/main/source/packet.cc \
+    sources/modules/video_coding/main/source/qm_select.cc \
+#    sources/modules/video_coding/main/source/qm_select_unittest.cc \
+    sources/modules/video_coding/main/source/receiver.cc \
+    sources/modules/video_coding/main/source/rtt_filter.cc \
+    sources/modules/video_coding/main/source/session_info.cc \
+#    sources/modules/video_coding/main/source/session_info_unittest.cc \
+    sources/modules/video_coding/main/source/timestamp_extrapolator.cc \
+    sources/modules/video_coding/main/source/timestamp_map.cc \
+    sources/modules/video_coding/main/source/timing.cc \
+    sources/modules/video_coding/main/source/video_coding_impl.cc \
+#    sources/modules/video_coding/main/source/video_coding_robustness_unittest.cc \
+    sources/modules/video_processing/main/source/brighten.cc \
+    sources/modules/video_processing/main/source/brightness_detection.cc \
+    sources/modules/video_processing/main/source/color_enhancement.cc \
+    sources/modules/video_processing/main/source/content_analysis.cc \
+#    sources/modules/video_processing/main/source/content_analysis_sse2.cc \
+    sources/modules/video_processing/main/source/deflickering.cc \
+    sources/modules/video_processing/main/source/denoising.cc \
+    sources/modules/video_processing/main/source/frame_preprocessor.cc \
+    sources/modules/video_processing/main/source/spatial_resampler.cc \
+    sources/modules/video_processing/main/source/video_decimator.cc \
+    sources/modules/video_processing/main/source/video_processing_impl.cc \
+#    sources/modules/video_render/main/source/linux/video_render_linux_impl.cc \
+#    sources/modules/video_render/main/source/linux/video_x11_channel.cc \
+#    sources/modules/video_render/main/source/linux/video_x11_render.cc \
+    sources/modules/video_render/main/source/incoming_video_stream.cc \
+    sources/modules/video_render/main/source/video_render_frames.cc \
+    sources/modules/video_render/main/source/video_render_impl.cc \
+    sources/modules/video_render/main/source/external/video_render_external_impl.cc
+#zhangp add 2016.3.24 end
 
 headers.files += interface/media_stream.h
 
@@ -963,4 +1253,3 @@ headers.path = /usr/include/eim/eimwebrtc/
 
 #INSTALLS += target headers pkgconfig
 INSTALLS += target headers
-

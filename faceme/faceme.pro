@@ -9,6 +9,7 @@ include(syberos.pri)
 TEMPLATE = subdirs
 CONFIG += ordered
 SUBDIRS = \
+        libyuv \
         webrtc \
         face
 
