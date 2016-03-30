@@ -4,7 +4,7 @@
    Webrtc build with Qt.
    
 
-Name: WebRTC
+Name: WebRT
 URL: http://www.webrtc.org
 
 Description:
