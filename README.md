@@ -4,10 +4,12 @@
    Webrtc build with Qt.
    
 
-Name: WebRT
+Name: WebRTC
+
 URL: http://www.webrtc.org
 
 Description:
+
 WebRTC provides real time voice and video processing
 functionality to enable the implementation of 
 PeerConnection/MediaStream.
